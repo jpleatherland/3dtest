@@ -5,6 +5,9 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+
+    public static PlayerController instance;
+
     public CharacterController characterController;
     public GameObject playerModel;
     public float moveSpeed;
@@ -18,7 +21,11 @@ public class PlayerController : MonoBehaviour
 
     private Camera theCamera;
 
-
+    void Awake()
+    {
+        instance = this;
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -29,16 +36,18 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float yStore = moveDirection.y;
-        moveDirection = (transform.forward * Input.GetAxisRaw("Vertical")) + (transform.right * Input.GetAxisRaw("Horizontal")); 
+        moveDirection = (transform.forward * Input.GetAxisRaw("Vertical")) + (transform.right * Input.GetAxisRaw("Horizontal"));
         moveDirection.Normalize();
         moveDirection *= moveSpeed;
         moveDirection.y = yStore;
+        if (!characterController.isGrounded)
+        {
+            moveDirection.y += Physics.gravity.y * Time.deltaTime * gravityScale;
+        }
         if (Input.GetButtonDown("Jump") && characterController.isGrounded)
         {
             moveDirection.y = jumpForce;
         }
-
-        moveDirection.y += Physics.gravity.y * Time.deltaTime * gravityScale;
 
         //transform.position = transform.position + (moveDirection * Time.deltaTime * moveSpeed);
         characterController.Move(moveDirection * Time.deltaTime);
