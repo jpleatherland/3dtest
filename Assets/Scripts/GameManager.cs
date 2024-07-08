@@ -52,4 +52,10 @@ public class GameManager : MonoBehaviour
         UIManager.instance.fadeFromBlack = true;
 
     }
+
+    public void SetSpawnPoint(Vector3 newSpawnPosition)
+    {
+        playerRespawnPosition = newSpawnPosition;
+        Debug.Log("Set spawn point to: " + transform.position);
+    }
 }
