@@ -1882,8 +1882,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 1815752135}
   playerModel: {fileID: 1352561423}
-  moveSpeed: 5
-  jumpForce: 10
+  moveSpeed: 8
+  jumpForce: 16
   rotationSpeed: 0
   gravityScale: 5
   playerAnimator: {fileID: 1352561425}
