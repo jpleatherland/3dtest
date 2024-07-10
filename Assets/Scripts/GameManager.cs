@@ -32,10 +32,11 @@ public class GameManager : MonoBehaviour
 
     public void Respawn()
     {
-        StartCoroutine(RespawnCo());
+        StartCoroutine(DeathAnim());
+        // StartCoroutine(RespawnCo());
     }
 
-    public IEnumerator RespawnCo()
+    private IEnumerator RespawnCo()
     {
         PlayerController.instance.gameObject.SetActive(false);
         CameraController.instance.cinemachineBrain.enabled = false;
@@ -59,5 +60,13 @@ public class GameManager : MonoBehaviour
     public void SetSpawnPoint(Vector3 newSpawnPosition)
     {
         playerRespawnPosition = newSpawnPosition;
+    }
+
+    public IEnumerator DeathAnim()
+    {
+        PlayerController.instance.playerAnimator.SetBool("isDead", true);
+        yield return new WaitForSeconds(1f);
+        PlayerController.instance.playerAnimator.SetBool("isDead", false);
+        StartCoroutine(RespawnCo());
     }
 }

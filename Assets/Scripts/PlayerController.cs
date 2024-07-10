@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isKnocking)
+        if (!isKnocking && !playerAnimator.GetBool("isDead"))
         {
             playerMovement();
         }
