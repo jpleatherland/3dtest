@@ -47,6 +47,7 @@ public class HealthManager : MonoBehaviour
         if (invicibleCounter <= 0)
         {
             currentHealth -= damage;
+            UIManager.instance.RemoveHearts(damage);
 
             if (currentHealth <= 0)
             {
@@ -67,11 +68,13 @@ public class HealthManager : MonoBehaviour
     public void ResetHealth()
     {
         currentHealth = maxHealth;
+        UIManager.instance.AddHearts(maxHealth);
     }
 
     public void AddHealth(int healAmount)
     {
         currentHealth += healAmount;
+        UIManager.instance.AddHearts(healAmount);
 
         if (currentHealth > maxHealth)
         {
