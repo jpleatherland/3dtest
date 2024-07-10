@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour
     public void Respawn()
     {
         StartCoroutine(DeathAnim());
-        // StartCoroutine(RespawnCo());
     }
 
     private IEnumerator RespawnCo()
