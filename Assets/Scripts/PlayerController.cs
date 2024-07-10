@@ -21,11 +21,15 @@ public class PlayerController : MonoBehaviour
 
     private Camera theCamera;
 
+    public bool isKnocking;
+    public float knockbackCounter;
+    public Vector2 knockbackForce;
+
     void Awake()
     {
         instance = this;
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +38,22 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        if (!isKnocking)
+        {
+            playerMovement();
+        }
+
+        if (isKnocking)
+        {
+            knockback();
+        }
+
+        playerAnimator.SetFloat("Speed", Mathf.Abs(moveDirection.x) + Mathf.Abs(moveDirection.z));
+        playerAnimator.SetBool("isJumping", !characterController.isGrounded);
+    }
+
+    private void playerMovement()
     {
         float yStore = moveDirection.y;
         moveDirection = (transform.forward * Input.GetAxisRaw("Vertical")) + (transform.right * Input.GetAxisRaw("Horizontal"));
@@ -49,7 +69,6 @@ public class PlayerController : MonoBehaviour
             moveDirection.y = jumpForce;
         }
 
-        //transform.position = transform.position + (moveDirection * Time.deltaTime * moveSpeed);
         characterController.Move(moveDirection * Time.deltaTime);
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
@@ -58,8 +77,32 @@ public class PlayerController : MonoBehaviour
             playerModel.transform.rotation = newRotation;
             playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
         }
+    }
 
-        playerAnimator.SetFloat("Speed", Mathf.Abs(moveDirection.x) + Mathf.Abs(moveDirection.z));
-        playerAnimator.SetBool("isJumping", !characterController.isGrounded);
+    public void triggerKnockback(float knockbackLength, Vector2 knockbackPower)
+    {
+        isKnocking = true;
+        knockbackCounter = knockbackLength;
+        knockbackForce = knockbackPower;
+        moveDirection.y = knockbackForce.y;
+    }
+
+    private void knockback()
+    {
+        knockbackCounter -= Time.deltaTime;
+        if (knockbackCounter <= 0)
+        {
+            isKnocking = false;
+            return;
+        }
+        float yStore = moveDirection.y;
+        moveDirection = playerModel.transform.forward * -knockbackForce.x;
+        moveDirection.y = yStore;
+        if (!characterController.isGrounded)
+        {
+            moveDirection.y += Physics.gravity.y * Time.deltaTime * gravityScale;
+        }
+        
+        characterController.Move(moveDirection * Time.deltaTime);
     }
 }

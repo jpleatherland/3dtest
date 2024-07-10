@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -46,7 +47,9 @@ public class GameManager : MonoBehaviour
         PlayerController.instance.transform.position = playerRespawnPosition;
         PlayerController.instance.transform.rotation = playerRespawnRotation;
         PlayerController.instance.playerModel.transform.rotation = playerRespawnRotation;
+        StartCoroutine(CameraController.instance.CentreCameraInstant());
         CameraController.instance.cinemachineBrain.enabled = true;
+        HealthManager.instance.ResetHealth();
         PlayerController.instance.gameObject.SetActive(true);
 
         UIManager.instance.fadeFromBlack = true;
@@ -56,6 +59,5 @@ public class GameManager : MonoBehaviour
     public void SetSpawnPoint(Vector3 newSpawnPosition)
     {
         playerRespawnPosition = newSpawnPosition;
-        Debug.Log("Set spawn point to: " + transform.position);
     }
 }
