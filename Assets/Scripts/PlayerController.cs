@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     public float knockbackCounter;
     public Vector2 knockbackForce;
 
+    public GameObject playerPiece;
+
     void Awake()
     {
         instance = this;
