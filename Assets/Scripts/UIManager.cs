@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class UIManager : MonoBehaviour
 
     int totalHearts;
     float currentHearts;
+
+    public TMP_Text coinText;
 
     void Awake()
     {

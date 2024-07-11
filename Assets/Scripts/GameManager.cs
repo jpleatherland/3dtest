@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     private Vector3 playerRespawnPosition;
     private Quaternion playerRespawnRotation;
 
+    public int currentCoins;
+
     private void Awake()
     {
         instance = this;
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
 
         playerRespawnPosition = PlayerController.instance.transform.position;
         playerRespawnRotation = PlayerController.instance.transform.rotation;
+        AddCoins(0);
     }
 
     // Update is called once per frame
@@ -67,5 +70,11 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         PlayerController.instance.playerAnimator.SetBool("isDead", false);
         StartCoroutine(RespawnCo());
+    }
+
+    public void AddCoins(int coinValue)
+    {
+        currentCoins += coinValue;
+        UIManager.instance.coinText.text = "" + currentCoins;
     }
 }
