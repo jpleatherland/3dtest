@@ -41,6 +41,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isKnocking && !playerAnimator.GetBool("isDead") && Input.GetButtonDown("Fire1"))
+        {
+            Attack();
+        }
+
         if (!isKnocking && !playerAnimator.GetBool("isDead"))
         {
             playerMovement();
@@ -106,5 +111,10 @@ public class PlayerController : MonoBehaviour
         }
         
         characterController.Move(moveDirection * Time.deltaTime);
+    }
+
+    private void Attack()
+    {
+        playerAnimator.SetTrigger("Attack");
     }
 }
